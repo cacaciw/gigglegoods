@@ -3,9 +3,9 @@ from django.shortcuts import render
 # Create your views here.
 def show_main(request):
     context = {
-        'name' : 'Laughing Gas',
-        'price': '$ 20',
-        'description': 'Laughing on the go'
+        'App name' : 'Giggle Goods',
+        'Name': 'Tarissa Mutia Andini',
+        'Class': 'PBP C'
     }
 
     return render(request, "main.html", context)
