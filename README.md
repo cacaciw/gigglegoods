@@ -1,3 +1,6 @@
+## Link proyek
+http://tarissa-mutia-bbldrizzy.pbp.cs.ui.ac.id
+
 ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 1. Membuat proyek django yang baru
 - Pertama saya membuat direktori baru dengan nama giggle goods
@@ -34,6 +37,7 @@
 ## Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 ![Uploading Screenshot 2024-09-09 at 20.17.55 2.jpeg…]()
 
+(Link drive bagan: https://drive.google.com/drive/folders/1pelIxNo9OPmyCBBEmUvfjsOvh0BlyKe8?usp=sharing)
 
 ## Jelaskan fungsi git dalam pengembangan perangkat lunak!
 Git adalah sistem kontrol versi yang digunakan secara luas dalam pengembangan perangkat lunak. Fungsinya mencakup berbagai aspek penting yang membantu tim pengembang mengelola perubahan kode dengan efisien dan kolaboratif. Berikut adalah fungsi utama Git dalam pengembangan perangkat lunak:
