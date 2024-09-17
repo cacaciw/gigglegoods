@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from main.forms import GiggleForm
 from main.models import GiggleCatalogue
 
+
 # Create your views here.
 def show_main(request):
     giggle_entry = GiggleCatalogue.objects.all()

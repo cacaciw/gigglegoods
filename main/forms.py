@@ -4,4 +4,4 @@ from main.models import GiggleCatalogue
 class GiggleForm(ModelForm):
     class Meta:
         model = GiggleCatalogue
-        fields = ["product", "price", "description", "giggle_level"]
+        fields = ["name", "price", "description", "giggleLevel"]
