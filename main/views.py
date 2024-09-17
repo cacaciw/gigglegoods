@@ -5,12 +5,12 @@ from main.models import GiggleCatalogue
 
 # Create your views here.
 def show_main(request):
-    giggle_entry = GiggleCatalogue.objects.all()
+    giggle_entries = GiggleCatalogue.objects.all()
     context = {
         'App' : 'Giggle Goods',
         'Name': 'Tarissa Mutia Andini',
         'Class': 'PBP C',
-        'giggle_entries': giggle_entry,
+        'giggle_entries': giggle_entries,
     }
 
     return render(request, "main.html", context)

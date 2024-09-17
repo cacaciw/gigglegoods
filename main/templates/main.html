@@ -10,7 +10,7 @@
 <h5>Class: </h5>
 <p>{{Class}}</p> 
 
-{% if not giggle_entry %}
+{% if not giggle_entries %}
 <p>Belum ada pesanan ke GiggleGoods.</p>
 {% else %}
 <table>
@@ -23,7 +23,7 @@
 
   {% comment %} Berikut cara memperlihatkan data mood di bawah baris ini 
   {% endcomment %} 
-  {% for giggle_entry in giggle_entry %}
+  {% for giggle_entry in giggle_entries %}
   <tr>
     <td>{{giggle_entry.name}}</td>
     <td>{{giggle_entry.price}}</td>
