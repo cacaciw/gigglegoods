@@ -19,6 +19,8 @@ class Migration(migrations.Migration):
                 ('price', models.IntegerField()),
                 ('description', models.TextField()),
                 ('giggleLevel', models.IntegerField()),
+                ('time', models.DateField(auto_now_add=True)),
+
             ],
         ),
     ]
