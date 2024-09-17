@@ -1,5 +1,5 @@
 ## Link proyek
-http://tarissa-mutia-bbldrizzy.pbp.cs.ui.ac.id
+http://tarissa-mutia-gigglegoods.pbp.cs.ui.ac.id
 
 ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 1. Membuat proyek django yang baru
@@ -59,3 +59,61 @@ Kombinasi fitur ini menjadikan Django pilihan ideal untuk memulai belajar pengem
 Django menggunakan ORM (Object-Relational Mapping) untuk memetakan objek dalam kode Python ke tabel-tabel di database relasional tanpa perlu menulis kueri SQL secara manual. 
 Dengan ORM, pengembang dapat berinteraksi dengan database menggunakan sintaks Python, sehingga operasi seperti menyimpan, mengambil, memperbarui, dan menghapus data menjadi lebih sederhana. 
 ORM juga menangani relasi antar tabel secara otomatis dan memungkinkan aplikasi untuk lebih mudah dipindahkan ke berbagai jenis database, seperti SQLite atau PostgreSQL.
+
+
+# Tugas 3
+
+## Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+Data delivery penting dalam pengimplementasian platform karena:
+
+1. Konsistensi Data, Menjamin data yang dikirim akurat dan seragam.
+2. Kecepatan, Memastikan data sampai dengan cepat, penting untuk aplikasi real-time.
+3. Skalabilitas, Mendukung pertumbuhan volume data dan jumlah pengguna.
+4. Pengalaman Pengguna, Meningkatkan kepuasan dengan data yang relevan dan terkini.
+5. Keamanan, Melindungi data dari akses tidak sah.
+Secara keseluruhan, data delivery memastikan performa, integritas, dan keamanan platform.
+
+## Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+JSON lebih populer dibandingkan XML karena kemudahan penggunaannya, ukuran yang lebih kecil, dan performa yang lebih baik dalam kebanyakan kasus. JSON lebih efisien untuk komunikasi data modern, terutama dalam aplikasi web dan API, tetapi XML masih memiliki tempat dalam konteks tertentu yang memerlukan fungsionalitas atau struktur khusus.
+
+## Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+Metode `is_valid()` pada form Django digunakan untuk memeriksa apakah data yang dikirimkan melalui formulir memenuhi semua validasi yang telah ditentukan. Ketika memanggil `is_valid()` pada sebuah instance form, metode ini akan:
+- Validasi Data, Memeriksa setiap field dalam form untuk memastikan data yang dimasukkan sesuai dengan aturan validasi yang telah ditentukan (seperti tipe data yang benar, format, panjang, dan lain-lain).
+- Mengumpulkan Error, Jika data tidak valid, metode ini akan mengumpulkan dan menyimpan pesan error yang terkait dengan field yang bermasalah. Pesan error ini kemudian bisa digunakan untuk memberi umpan balik kepada pengguna.
+- Mengembalikan Hasil Validasi, Metode ini mengembalikan `True` jika semua data valid, dan `False` jika ada kesalahan. 
+
+Kenapa Kita Membutuhkan `is_valid()`?
+- Keamanan Data, Memastikan bahwa hanya data yang valid dan aman yang diproses, menghindari masalah keamanan seperti injeksi data yang tidak valid.
+- Pengalaman Pengguna, Memberi umpan balik yang jelas kepada pengguna jika ada kesalahan dalam pengisian form, sehingga mereka bisa memperbaiki data yang salah sebelum data diproses lebih lanjut.
+- Konsistensi Data, Menghindari penyimpanan data yang tidak konsisten atau tidak sesuai format yang diinginkan, yang bisa mengakibatkan masalah dalam pengolahan data atau integritas database.
+Secara keseluruhan, `is_valid()` membantu menjaga kualitas dan keamanan data yang dikumpulkan melalui formulir di aplikasi Django.
+
+## Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+`csrf_token` di Django melindungi aplikasi dari serangan Cross-Site Request Forgery (CSRF) dengan memastikan bahwa permintaan POST berasal dari pengguna yang sah. Tanpa `csrf_token`, aplikasi rentan terhadap serangan di mana penyerang dapat memanipulasi permintaan atas nama pengguna yang telah masuk, berpotensi menyebabkan kerusakan atau pencurian data. Dengan menambahkan `csrf_token` di formulir, Django memastikan bahwa setiap permintaan yang diterima valid dan tidak dibuat oleh pihak yang tidak berwenang.
+
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+Berikut adalah cara saya mengerjakan Tugas Individu 3:
+1. Buat `forms.py` di direktori `main`, dan sesuaikan dengan model yang telah dibuat.
+2. Edit `views.py` untuk mengimpor `forms`, `HttpResponse`, `redirect`, dan `serializers`.
+3. Tambahkan fungsi untuk membuat objek baru dengan metode POST.
+4. Buat halaman baru dengan menambahkan file HTML baru di direktori `templates`, misalnya `create_giggle_entry.html`.
+5. Sertakan `{% csrf_token %}` dan tombol submit di formulir HTML.
+6. Tambahkan empat fungsi di `views.py` untuk menampilkan data dalam format JSON dan XML: `show_json`, `show_xml`, `show_xml_by_id`, dan `show_json_by_id`.
+7. Update `urls.py` dengan rute baru untuk halaman formulir dan halaman yang menampilkan data dalam format JSON dan XML.
+Proyek sekarang siap dijalankan! @_<
+
+## Mengakses keempat URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam README.md.
+
+show_xml
+<img width="1512" alt="Screenshot 2024-09-17 at 19 35 52" src="https://github.com/user-attachments/assets/62090021-c522-40db-ad38-53158455fddc">
+
+show_json
+<img width="1512" alt="Screenshot 2024-09-17 at 19 36 05" src="https://github.com/user-attachments/assets/37dde4be-14f4-4262-bfdb-38818276c889">
+
+show_json_by_id
+<img width="1512" alt="Screenshot 2024-09-17 at 19 36 19" src="https://github.com/user-attachments/assets/117b6c16-373c-4cb5-b6a7-082e079966f3">
+
+show_xml_by_id
+<img width="1512" alt="Screenshot 2024-09-17 at 19 36 25" src="https://github.com/user-attachments/assets/463152f9-ac97-4d20-b1c2-66ed0085bd39">
+
+
