@@ -117,3 +117,61 @@ show_xml_by_id
 <img width="1512" alt="Screenshot 2024-09-17 at 19 36 25" src="https://github.com/user-attachments/assets/463152f9-ac97-4d20-b1c2-66ed0085bd39">
 
 
+# Tugas 4
+## Apa perbedaan antara HttpResponseRedirect() dan redirect()
+- HttpResponseRedirect() dan redirect() adalah dua cara untuk mengalihkan pengguna ke URL lain dalam aplikasi Django, tetapi mereka digunakan dalam konteks yang berbeda. HttpResponseRedirect() adalah kelas yang langsung membuat respon HTTP untuk pengalihan dan memerlukan kamu untuk memberikan URL secara manual. Ini memberikan kontrol yang lebih langsung, tetapi juga membutuhkan lebih banyak kode untuk menangani pengalihan.
+- redirect() adalah fungsi pembantu yang lebih tinggi levelnya dan menawarkan kemudahan penggunaan yang lebih besar. Dengan redirect(), kita dapat memberikan URL, nama view, atau bahkan ID objek, membuatnya lebih fleksibel dan intuitif. Fungsi ini juga secara otomatis menangani pengalihan berdasarkan nama view, yang mengurangi kemungkinan kesalahan saat menulis URL secara manual. Oleh karena itu, dalam banyak kasus, penggunaan redirect() lebih disarankan karena meningkatkan kejelasan kode dan efisiensi pengalihan.
+
+## Jelaskan cara kerja penghubungan model Product dengan User!
+Untuk menghubungkan model `Product` dengan model `User` dalam Django, kita dapat menggunakan relasi satu-ke-banyak.
+- Definisi Model: Model `Product` didefinisikan dengan atribut seperti nama, deskripsi, dan harga. Hubungan dengan model `User` dibuat menggunakan `ForeignKey`, yang menunjukkan bahwa setiap produk dimiliki oleh satu pengguna.
+- Pengaturan `ForeignKey`: Dengan menggunakan `ForeignKey(User, on_delete=models.CASCADE)`, kita menetapkan bahwa jika seorang pengguna dihapus, semua produk terkait juga akan dihapus. Ini menjaga integritas data.
+- Atribut `related_name`: Menggunakan `related_name='products'` memungkinkan akses yang lebih mudah untuk mendapatkan semua produk milik seorang pengguna. Contohnya, kita bisa menggunakan `user.products.all()` untuk mengambil semua produk yang dimiliki oleh pengguna tersebut.
+- Pembuatan Data: Saat membuat produk baru, kita dapat langsung menetapkan pengguna yang memiliki produk tersebut. Ini menjadikan pengelolaan data lebih terstruktur.
+- Pengambilan Data: Dengan relasi yang sudah terhubung, kita dapat dengan mudah mengambil semua produk milik seorang pengguna, memungkinkan pengelolaan dan analisis data yang lebih efisien.
+
+## Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+Authentication dan authorization adalah dua konsep penting dalam keamanan aplikasi, tetapi mereka memiliki perbedaan yang jelas,
+1. Authentication, proses verifikasi identitas pengguna. Ini memastikan bahwa pengguna adalah siapa yang mereka klaim.
+Contoh, saat pengguna memasukkan username dan password untuk login, sistem memeriksa apakah kredensial tersebut valid.
+2. Authorization, proses menentukan apakah pengguna yang telah terautentikasi memiliki izin untuk mengakses sumber daya tertentu atau melakukan tindakan tertentu.
+Contoh, setelah pengguna berhasil login, sistem menentukan apakah pengguna tersebut memiliki hak akses untuk melihat halaman tertentu atau mengedit data.
+Saat pengguna login, langkah pertama adalah autentikasi. Pengguna memasukkan kredensial mereka (username dan password), dan sistem memverifikasi informasi tersebut. Jika kredensial valid, pengguna dianggap terautentikasi. Selanjutnya, sistem melakukan otorisasi untuk menentukan akses pengguna berdasarkan peran atau izin yang telah ditetapkan.
+3. Implementasi di Django
+Authentication: Django menyediakan sistem autentikasi built-in yang memungkinkan pengembang untuk menangani proses login dan logout dengan mudah. Ini termasuk penggunaan model User dan fungsi seperti authenticate() untuk memverifikasi kredensial pengguna.
+Authorization: Untuk otorisasi, Django menggunakan sistem permission dan grup. Pengembang dapat menetapkan izin tertentu pada model atau tampilan (views) dan menggunakan decorator seperti @login_required dan @permission_required untuk membatasi akses pengguna.
+
+## Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+Django mengingat pengguna yang telah login menggunakan session cookies. Ketika pengguna berhasil login, Django membuat session yang berisi informasi terkait pengguna dan menyimpannya di database, memori, atau file tergantung pada konfigurasi. Django kemudian mengirimkan session ID kepada pengguna dalam bentuk cookie. Setiap kali pengguna membuat permintaan baru, cookie tersebut dikirim kembali ke server untuk memverifikasi identitas pengguna yang sudah login, sehingga pengguna tidak perlu login ulang selama sesi berlangsung.
+- Kegunaan Lain dari Cookies
+Selain mengingat pengguna yang login, cookies memiliki banyak kegunaan lain:
+1. Menyimpan Preferensi Pengguna (Misalnya, bahasa atau tema yang dipilih pengguna)
+2. Melacak Aktivitas Pengguna, website dapat menggunakan cookies untuk melacak halaman yang dikunjungi atau produk yang dilihat pengguna, membantu dalam personalisasi konten.
+3. Membantu dalam Analiti, cookies digunakan untuk melacak perilaku pengguna secara anonim, memberikan data untuk analitik website.
+4. Mengelola Keranjang Belanja ,di situs e-commerce, cookies sering digunakan untuk menyimpan informasi sementara tentang barang-barang yang ditambahkan ke keranjang belanja.
+- Apakah Semua Cookies Aman Digunakan?
+Tidak semua cookies aman, terutama jika tidak dikelola dengan benar. Beberapa potensi risiko:
+- Cookies Tanpa Enkripsi, jika cookie yang berisi informasi sensitif dikirim tanpa enkripsi (seperti melalui HTTP, bukan HTTPS), maka bisa dicegat oleh pihak ketiga.
+- Session Hijacking, penyerang bisa mencuri cookie session dan menyamar sebagai pengguna yang sah jika cookie tidak diamankan dengan baik.
+- Third-Party Cookies, cookies dari pihak ketiga dapat digunakan untuk melacak aktivitas pengguna di berbagai situs, yang dapat menimbulkan masalah privasi.
+Untuk meningkatkan keamanan, Django mendukung penggunaan **Secure Cookies** (cookies yang hanya dikirim melalui HTTPS) dan **HttpOnly Cookies** (cookies yang tidak dapat diakses oleh JavaScript), sehingga mengurangi risiko pencurian cookie dan eksploitasi lainnya.
+
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+Berikut adalah cara saya mengerjakan checlist Tugas Individu 4:
+1. Pada directori views.py, saya menambahkan import UserCreationForm dan messages
+2. Lalu saya membuat fungsi `register` yang akan diimport ke urls.py dan membuat berkas `register.html` di dalam templates pada direktori main
+3. Selanjutnya saya membuat fungsi login dengan membuka views.py dan menambahkan import authenticate, login, dan AuthenticationForm. Lalu saya membuat fungsi `login_user` yang akan diimport ke urls.py dan membuat berkas `login.html` di dalam templates pada direktori main
+4. Saya membuat fungsi logout dengan mengimport fungsi logout, menambahkan button logout ke `main.html`, dan mengimport fungsi logout ke urls.py pada direktori main
+5. Lalu saya mengrekstriksi halaman main untuk user yang belum login, dengan mengimport `login_required`dan menambahkan `@login_required(login_url='/login')` diatas fungsi show_main
+6. Setelah itu saya menabahkan penggunaan data cookies, dengan mengimpor import HttpResponseRedirect, reverse, dan datetime. Pada berkas yang sama fungsi `login_user` ditambahkan fungsionalitas cookies yang bernama `last_login`, dan pada show_main menambahkan 'last_login': request.COOKIES['last_login'] pada bagian context, dan mengedit main.html agar memperlihatkan sesi login terakhirnya
+7. Lalu saya menghubungkan models product dengan user, pada berkas models.py saya mengimport user, lalu saya mengubah fungsi create_giggle_entry dengan membuat field user dengan objek User dari return value request.user yang sedang terotorisasi untuk menandakan bahwa objek tersebut dimiliki oleh pengguna yang sedang login.
+8. Lalu saya mengubah value dari giggle_entries dan context pada fungsi show_main dengan user yang suda terotorisasi agar nama pada menu utama adalah nama user yang sudah masuk
+9. Saya makemigrations dan migrate
+10. Setelah itu saya import os pada setting.py, dan mengubah konfigurasi debug
+11. Terakhir saya save semua berkas dan melakukan add, commit, push
+Proyek sekarang siap dijalankan! @_<
+
+
+
+
+
