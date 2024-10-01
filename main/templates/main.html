@@ -1,52 +1,48 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+{% include 'navbar.html' %}
 
-<h1>Giggle Goods</h1>
+<div class="overflow-x-hidden px-4 md:px-8 pb-6 pt-0 min-h-screen bg-gradient-to-r from-blue-900 via-white to-black flex flex-col">
+  <!-- Black square container -->
+  <div class="w-full bg-black h-64 flex items-center justify-center animate-shine">
+    <!-- 2x2 grid layout -->
+    <div class="grid grid-cols-2 grid-rows-2 w-full h-full p-20">
+      
+      <!-- Left column (Text content) -->
+      <div class="flex flex-col justify-center text-white">
+        <div class="text-4xl mb-2">Hello, {{ user.username }}</div>
+        <div class="text-2xl">Your NPM is 2306245756</div>
+      </div>
 
-<h5>App name: </h5>
-<p>{{App}}</p> 
-<h5>Name: </h5>
-<p>{{Name}}</p> 
-<h5>Class: </h5>
-<p>{{Class}}</p> 
+      <!-- Right column (Buttons) -->
+      <div class="flex flex-col justify-center items-center space-y-4">
+        <!-- See Catalogue Button -->
+        <a href="{% url 'main:home_page' %}" class="bg-white text-black px-6 py-3  hover:bg-red-100">See Catalogue</a>
+    
+        <!-- Add Product Button -->
+        <a href="{% url 'main:create_giggle_entry' %}" class="bg-white text-black px-6 py-3  hover:bg-red-100">Add Product</a>
+      </div>
 
-{% if not giggle_entries %}
-<p>Belum ada pesanan ke GiggleGoods.</p>
-{% else %}
-<table>
-  <tr>
-    <th>Product Name   </th>
-    <th>Price </th>
-    <th>Description</th>
-    <th>Giggle Level</th>
-    <th>Time of Order </th>
-  </tr>
-
-  {% comment %} Berikut cara memperlihatkan data mood di bawah baris ini 
-  {% endcomment %} 
-  {% for giggle_entry in giggle_entries %}
-  <tr>
-    <td>{{giggle_entry.name}}</td>
-    <td>{{giggle_entry.price}}</td>
-    <td>{{giggle_entry.description}}</td>
-    <td>{{giggle_entry.giggleLevel}}</td>
-    <td>{{giggle_entry.time}}</td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
-
-<br />
-
-<a href="{% url 'main:create_giggle_entry' %}">
-  <button>Add New Order</button>
-</a>
-
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a>
-
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-
+    </div>
+  </div>
+  <div class="px-0 mb-4">
+    <div class="flex items-center bg-black py-2 px-4 w-fit">
+      <h1 class="text-white text-center">Last Login: {{last_login}}</h1>
+    </div>
+  </div>
+  {% if not giggle_entries %}
+  <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+      <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+      <p class="text-center text-gray-600 mt-4">No products added yet</p>
+  </div>
+  {% else %}
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full">
+        {% for giggle_entry in giggle_entries %}
+            {% include 'card_product.html' with giggle_entry=giggle_entry %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
 
 {% endblock content %}
