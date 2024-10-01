@@ -171,7 +171,103 @@ Berikut adalah cara saya mengerjakan checlist Tugas Individu 4:
 11. Terakhir saya save semua berkas dan melakukan add, commit, push
 Proyek sekarang siap dijalankan! @_<
 
+#TUGAS 5
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+   a. Urutan Spesifisitas (Specificity)
+      CSS menentukan prioritas berdasarkan **spesifisitas** dari setiap selector. Spesifisitas dihitung berdasarkan empat kategori:
+      - Inline styles (gaya yang langsung diterapkan di elemen HTML) memiliki prioritas tertinggi.
+      - ID selector(`#id`) memiliki prioritas berikutnya.
+      - Class selector, **attribute selector**, dan **pseudo-class** (seperti `.class`, `[type="text"]`, atau `:hover`) berada di bawah ID.
+      - Tag selector(misalnya `p`, `div`) dan **pseudo-element** (seperti `::before`, `::after`) memiliki prioritas paling rendah.
+    b. Perhitungan Spesifisitas
+      Setiap selector dipecah ke dalam kategori-kategori berikut untuk menghitung spesifisitasnya:
+      - Inline style 1 poin pada elemen inline (ini memberikan spesifisitas tertinggi).
+      - ID selector 1 poin per ID (`#example`).
+      - Class selector. attribute selector, pseudo-class 1 poin per item (misalnya `.class`, `[type="text"]`, `:hover`).
+      - Tag selector dan pseudo-element 1 poin per item (`div`, `p`, `::before`).
+      Contoh perhitungan spesifisitas:
+      - Inline style: `style="color: red"` (Spesifisitas: 1000)
+      - ID selector: `#id` (Spesifisitas: 0100)
+      - Class selector: `.class` (Spesifisitas: 0010)
+      - Tag selector: `p` (Spesifisitas: 0001)
+      Jika elemen dipengaruhi oleh beberapa selector, selector dengan nilai spesifisitas tertinggi yang akan diambil.
+    c. Urutan Sumber CSS
+      Selain spesifisitas, urutan sumber CSS juga memengaruhi prioritas:
+      - Urutan penulisan: Jika dua selector memiliki spesifisitas yang sama, yang ditulis paling akhir akan digunakan.
+      - `!important`: Properti dengan deklarasi `!important` akan mengesampingkan semua aturan di atas (kecuali jika properti lain juga menggunakan `!important` dan memiliki spesifisitas lebih tinggi).
+      Urutan prioritas CSS selector dipengaruhi oleh spesifisitas selector, urutan sumber CSS, dan deklarasi `!important`. Selector dengan spesifisitas lebih tinggi akan selalu diterapkan lebih dulu.
 
+2. Responsive design penting karena memastikan aplikasi web menyesuaikan tampilannya sesuai perangkat yang digunakan, baik smartphone, tablet, atau desktop. Ini memberikan pengalaman       pengguna yang konsisten, meningkatkan SEO, serta mempermudah pengembangan dan pemeliharaan.
+Contoh Aplikasi yang Sudah Menerapkan Responsive Design:
+- Instagram: Tampilan web dan mobile yang mudah digunakan.
+- Medium: Artikel menyesuaikan ukuran layar.
+Contoh Aplikasi yang Belum Menerapkan Responsive Design:
+- Website yang tidak ramah mobile.
+- Situs web pendidikan tertentu: Hanya mendukung tampilan desktop.
+Responsive design memastikan akses yang nyaman di berbagai perangkat.
 
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+  a. Margin: Ruang di luar elemen, memberikan jarak antara elemen dengan elemen lain di sekitarnya.
+   - Contoh implementasi: 
+     ```
+     div {
+       margin: 20px;
+     }
+     ```
+   Ini akan memberikan jarak 20px di luar elemen `div`.
+  b. Border: Garis yang mengelilingi elemen, berada di antara margin dan padding.
+   - Contoh implementasi: 
+     ```
+     div {
+       border: 2px solid black;
+     }
+     ```
+   Ini akan memberikan garis border hitam dengan ketebalan 2px di sekitar elemen `div`.
+
+  c. Padding: Ruang di dalam elemen, memberikan jarak antara konten elemen dengan border elemen tersebut.
+   - Contoh implementasi: 
+     ```
+     div {
+       padding: 15px;
+     }
+     ```
+   Ini akan memberikan jarak 15px di dalam elemen `div` antara konten dan border.
+   Perbedaan mendasar: Margin mengontrol jarak luar, border adalah garis di sekitar elemen, dan padding mengatur jarak dalam elemen.
+
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+   Flexbox dan Grid Layout adalah dua teknik tata letak di CSS yang digunakan untuk menyusun elemen secara responsif.
+
+  a. Flexbox (Flexible Box Layout):
+   - Konsep: Flexbox digunakan untuk menyusun elemen dalam satu dimensi, baik secara baris (horizontal) maupun kolom (vertikal). Elemen di dalam flex container dapat diatur agar menyesuaikan ukuran atau ruang yang tersedia.
+   - Kegunaan: Ideal untuk menyusun elemen secara horizontal atau vertikal, seperti menata navigasi, kartu produk, atau galeri gambar.
+   - Contoh implementasi:
+     ```
+     .container {
+       display: flex;
+       justify-content: space-around;
+     }
+     ```
+   Ini akan membuat elemen dalam container berbaris dengan ruang di antara mereka.
+  b. Grid Layout:
+   - Konsep: Grid layout digunakan untuk membuat tata letak dua dimensi, yaitu baris dan kolom. Grid memungkinkan kita untuk menentukan area tertentu bagi elemen dengan lebih presisi.
+   - Kegunaan: Cocok untuk tata letak kompleks seperti halaman web dengan beberapa kolom dan baris, dashboard, atau layout halaman utama.
+   - Contoh implementasi:
+     ```
+     .container {
+       display: grid;
+       grid-template-columns: repeat(3, 1fr);
+     }
+     ```
+   Ini akan membagi container menjadi tiga kolom dengan lebar yang sama.
+   Perbedaan: Flexbox digunakan untuk tata letak satu dimensi (baris atau kolom), sedangkan Grid untuk tata letak dua dimensi (baris dan kolom).
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+  a. Saya membuat fungsi `edit_product` dan `delete_product` pada `views.py`, yang menerima request dan ID produk, lalu menambahkan URL-nya.
+  b. Saya membuat template untuk `edit_product`, sekaligus memperbarui template lain agar terlihat lebih menarik.
+  c. Di `main.html`, saya mengedit templatenya sehingga ketika tidak ada produk, muncul tampilan kosong dengan pesan yang menjelaskan bahwa produk tidak tersedia.
+  d. Saya membuat `card_product.html` yang dihubungkan ke `main.html` untuk menampilkan informasi produk yang meliputi nama, harga, deskripsi, serta tombol edit dan delete.
+  e. Saya mengatur layout `card_product` menggunakan grid untuk menampilkan informasi produk dengan rapi.
+  f. Saya membuat template navbar yang responsive di direktori luar, dengan mengaitkan link pada elemen-elemen di navbar.
+  g. Terakhir, saya menambahkan script agar situs dapat digunakan dengan nyaman di perangkat mobile, lalu melakukan `git add`, `commit`, dan `push`.
 
 
