@@ -171,7 +171,7 @@ Berikut adalah cara saya mengerjakan checlist Tugas Individu 4:
 11. Terakhir saya save semua berkas dan melakukan add, commit, push
 Proyek sekarang siap dijalankan! @_<
 
-#TUGAS 5
+# TUGAS 5
 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
    a. Urutan Spesifisitas (Specificity)
       CSS menentukan prioritas berdasarkan **spesifisitas** dari setiap selector. Spesifisitas dihitung berdasarkan empat kategori:
