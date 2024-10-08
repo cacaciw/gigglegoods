@@ -9,6 +9,6 @@ class GiggleCatalogue(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
     description = models.TextField()
-    giggleLevel = models.IntegerField()
+    giggleLevel = models.IntegerField(null=True, blank=True, default=0)
     time = models.DateField(auto_now_add=True)
 

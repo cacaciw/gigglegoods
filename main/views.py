@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from main.forms import GiggleForm
 from main.models import GiggleCatalogue
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -10,6 +10,10 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils.html import strip_tags
+
 
 def landing_page(request):
     return render(request, 'landing.html')
@@ -20,12 +24,12 @@ def home_page(request):
 
 @login_required(login_url='/login')
 def show_main(request):
-    giggle_entries = GiggleCatalogue.objects.filter(user=request.user)
+    #giggle_entries = GiggleCatalogue.objects.filter(user=request.user)
     context = {
         'App' : 'Giggle Goods',
         'Name': request.user.username,
         'Class': 'PBP C',
-        'giggle_entries': giggle_entries,
+        #'giggle_entries': giggle_entries,
         'last_login': request.COOKIES['last_login'],
     }
 
@@ -45,11 +49,11 @@ def create_giggle_entry(request):
     return render(request, "create_giggle_entry.html", context)
 
 def show_xml(request):
-    data = GiggleCatalogue.objects.all()
+    data = GiggleCatalogue.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = GiggleCatalogue.objects.all()
+    data = GiggleCatalogue.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_xml_by_id(request, id):
@@ -111,3 +115,25 @@ def delete_product(request, id):
     product = GiggleCatalogue.objects.get(pk = id)
     product.delete() #Hapus productnya
     return HttpResponseRedirect(reverse('main:show_main')) # Kembali ke halaman awal
+
+
+@csrf_exempt  # Only keep this if absolutely necessary
+@require_POST
+def add_giggle_entry_ajax(request):
+    name = strip_tags(request.POST.get("name"))
+    price = strip_tags(request.POST.get("price"))
+    description = strip_tags(request.POST.get("description"))
+    giggleLevel = strip_tags(request.POST.get("giggleLevel"))
+
+    if name and price and description:
+        giggle_entry = GiggleCatalogue.objects.create(
+            user=request.user,
+            name=name,
+            price=price,
+            description=description,
+            giggleLevel= giggleLevel
+        )
+        return JsonResponse({'success': True, 'id': giggle_entry.pk})
+    else:
+        return JsonResponse({'success': False})
+

@@ -3,12 +3,13 @@
 {% block content %}
 {% include 'navbar.html' %}
 
-<div class="overflow-x-hidden px-4 md:px-8 pb-6 pt-0 min-h-screen bg-gradient-to-r from-blue-900 via-white to-black flex flex-col">
+<div
+  class="overflow-x-hidden px-4 md:px-8 pb-6 pt-0 min-h-screen bg-gradient-to-r from-blue-900 via-white to-black flex flex-col">
   <!-- Black square container -->
   <div class="w-full bg-black h-64 flex items-center justify-center animate-shine">
     <!-- 2x2 grid layout -->
     <div class="grid grid-cols-2 grid-rows-2 w-full h-full p-20">
-      
+
       <!-- Left column (Text content) -->
       <div class="flex flex-col justify-center text-white">
         <div class="text-4xl mb-2">Hello, {{ user.username }}</div>
@@ -19,9 +20,15 @@
       <div class="flex flex-col justify-center items-center space-y-4">
         <!-- See Catalogue Button -->
         <a href="{% url 'main:home_page' %}" class="bg-white text-black px-6 py-3  hover:bg-red-100">See Catalogue</a>
-    
+
         <!-- Add Product Button -->
-        <a href="{% url 'main:create_giggle_entry' %}" class="bg-white text-black px-6 py-3  hover:bg-red-100">Add Product</a>
+        <a href="{% url 'main:create_giggle_entry' %}" class="bg-white text-black px-6 py-3  hover:bg-red-100">Add
+          Product</a>
+        <button data-modal-target="crudModal" data-modal-toggle="crudModal"
+          class="btn bg-white hover:bg-gray-600 text-black  py-2 px-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+          onclick="showModal();">
+          Add New Product by AJAX
+        </button>
       </div>
 
     </div>
@@ -31,18 +38,191 @@
       <h1 class="text-white text-center">Last Login: {{last_login}}</h1>
     </div>
   </div>
-  {% if not giggle_entries %}
-  <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
-      <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
-      <p class="text-center text-gray-600 mt-4">No products added yet</p>
-  </div>
-  {% else %}
-    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full">
-        {% for giggle_entry in giggle_entries %}
-            {% include 'card_product.html' with giggle_entry=giggle_entry %}
-        {% endfor %}
-    </div>
-    {% endif %}
-</div>
+  <div id="card_product"></div>
+  <div id="crudModal" tabindex="-1" aria-hidden="true"
+    class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+    <div id="crudModalContent"
+      class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-4 border-b rounded-t">
+        <h3 class="text-xl font-semibold text-gray-900">
+          Add Product
+        </h3>
+        <button type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+          id="closeModalBtn">
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="px-6 py-4 space-y-6 form-style">
+        <form id="giggleForm">
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+            <input type="text" id="name" name="name"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700"
+              placeholder="Enter your product name" required>
+          </div>
+          <div class="mb-4">
+            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <textarea id="description" name="description" rows="3"
+              class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-indigo-700"
+              placeholder="Describe your product" required></textarea>
+          </div>
+          <div class="mb-4">
+            <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+            <input type="number" id="price" name="price"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" required>
+          </div>
+          <div class="mb-4">
+            <label for="giggleLever" class="block text-sm font-medium text-gray-700">Giggle Level</label>
+            <input type="number" id="giggleLevel" name="giggleLevel"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" required>
+          </div>
+        </form>
 
-{% endblock content %}
+        <!-- Modal footer -->
+        <div
+          class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end">
+          <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg"
+            id="cancelButton">Cancel</button>
+          <button type="submit" id="submitProduct" form="giggleForm"
+            class="bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    refreshGiggleEntries() 
+
+    function getCSRFToken() {
+      let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      return csrfToken;
+    }
+
+
+    async function getGiggleEntries() {
+      return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+    }
+    async function refreshGiggleEntries() {
+      document.getElementById("card_product").innerHTML = "";
+      document.getElementById("card_product").className = "";
+      const giggleEntries = await getGiggleEntries();
+      let htmlString = "";
+      let classNameString = "";
+
+      if (giggleEntries.length === 0) {
+        classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+        htmlString = `
+            <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+                <p class="text-center text-gray-600 mt-4">Belum ada data product :(.</p>
+            </div>
+        `;
+      }
+      else {
+        classNameString = "columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full";
+        giggleEntries.forEach((item) => {
+          const name = DOMPurify.sanitize(item.fields.name);
+          const description = DOMPurify.sanitize(item.fields.description);
+          htmlString += `
+        <div class="relative break-inside-avoid">
+              <div class="relative top-5 bg-black shadow-md mb-6 flex flex-col border-2 border-gray-700 transform hover:scale-105 transition-transform duration-300">
+                  <div class="bg-gray-800 text-white p-2 border-b-2 border-gray-700 flex items-center">
+                      <h3 class="font-bold text-xl mb-2">${item.fields.name}</h3>
+                      <p class="text-gray-400 ml-2">${item.fields.time}</p>
+                      <h2 class="font-bold text-l absolute right-5">$${item.fields.price}</h2>
+                  </div>
+                  <div class="p-4 flex-grow">
+                      <p class="font-semibold text-lg mb-2">Description</p>
+                      <p class="text-gray-300 mb-2">
+                          <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">${item.fields.description}</span>
+                      </p>
+                  </div>
+                  <div class="flex justify-between p-4">
+                      <a href="edit-product/${item.pk}" class="bg-white hover:bg-gray-600 text-black font-semibold rounded-md px-2 py-2 transition duration-300">Edit Product</a>
+                      <a href="delete/${item.pk}" class="bg-white hover:bg-gray-600 text-black font-semibold rounded-md px-2 py-2 transition duration-300">Delete Product</a>
+                  </div>
+              </div>
+          </div>
+          `;
+
+        });
+      }
+      document.getElementById("card_product").className = classNameString;
+      document.getElementById("card_product").innerHTML = htmlString;
+    }
+    refreshGiggleEntries() 
+
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+
+    function showModal() {
+      const modal = document.getElementById('crudModal');
+      const modalContent = document.getElementById('crudModalContent');
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        modalContent.classList.add('opacity-100', 'scale-100');
+      }, 50);
+    }
+
+    function hideModal() {
+      const modal = document.getElementById('crudModal');
+      const modalContent = document.getElementById('crudModalContent');
+
+      modalContent.classList.remove('opacity-100', 'scale-100');
+      modalContent.classList.add('opacity-0', 'scale-95');
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150);
+    }
+
+    document.getElementById("cancelButton").addEventListener("click", hideModal);
+    document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+
+    function addGiggleEntry() {
+      event.preventDefault(); // Prevent default form submission
+      fetch("{% url 'main:add_giggle_entry_ajax' %}", {
+        method: "POST",
+        body: new FormData(document.querySelector('#giggleForm')),
+      })
+        .then(response => response.json()) // Ensure the response is JSON
+        .then(data => {
+          console.log(data); // Log response to see if product was added successfully
+          if (data.success) {
+            refreshGiggleEntries(); // Refresh the list if successful
+          } else {
+            alert("Failed to add product. Please try again.");
+          }
+        })
+
+        .catch(error => console.error("Error:", error));
+      document.getElementById("giggleForm").reset();
+      document.querySelector("[data-modal-toggle='crudModal']").click();
+
+      document.getElementById("giggleForm").reset(); // Reset the form after submission
+      hideModal(); // This should also close the modal after submission
+      return false;
+    }
+
+    document.getElementById("giggleForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      addGiggleEntry();
+    })
+
+
+    
+    
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+  {% endblock content %}
