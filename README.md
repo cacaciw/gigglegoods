@@ -1,4 +1,4 @@
-## Link proyek
+# Link proyek
 http://tarissa-mutia-gigglegoods.pbp.cs.ui.ac.id
 
 ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
@@ -271,3 +271,29 @@ Responsive design memastikan akses yang nyaman di berbagai perangkat.
   g. Terakhir, saya menambahkan script agar situs dapat digunakan dengan nyaman di perangkat mobile, lalu melakukan `git add`, `commit`, dan `push`.
 
 
+# Tugas 6
+1. Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+   - Interaktivitas, membuat halaman web dinamis dan responsif terhadap aksi pengguna tanpa perlu memuat ulang.
+   - Pengalaman Pengguna yang lebih baik, memungkinkan pembaruan konten secara real-time.
+   - Kompatibilitas Browser, didukung oleh hampir semua browser modern.
+   - Full-Stack Development, dengan Node.js, JavaScript bisa digunakan untuk front-end dan back-end.
+   - Framework dan Library, mempercepat pengembangan dengan alat seperti React, Angular, dan Vue.js.
+   - Validasi Sisi Klien, mengurangi beban server dengan memvalidasi data di browser pengguna.
+
+2.  Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+   `await` pada `fetch()` berfungsi untuk menunggu hingga proses pengambilan data dari server selesai sebelum melanjutkan eksekusi kode berikutnya. Tanpa `await`, `fetch()` akan                mengembalikan Promise yang belum terselesaikan, dan kode setelahnya akan tetap dieksekusi meskipun data dari server belum diterima. Ini dapat menyebabkan masalah jika data yang diambil     dari `fetch()` diperlukan untuk langkah berikutnya, karena kode tersebut akan berjalan tanpa menunggu hasilnya. Penggunaan `await` memastikan bahwa program menunggu respons sebelum         melanjutkan.
+
+3. Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
+   Decorator `csrf_exempt` digunakan pada view yang akan menerima permintaan AJAX POST untuk menghindari pengecekan token CSRF (Cross-Site Request Forgery). Dalam aplikasi Django, setiap permintaan POST yang dilakukan dari form HTML biasanya harus menyertakan token CSRF untuk melindungi aplikasi dari serangan CSRF. Namun, saat menggunakan AJAX, pengiriman token CSRF bisa jadi tidak praktis atau tidak memungkinkan, tergantung pada bagaimana permintaan dilakukan.
+   
+   Dengan menerapkan `csrf_exempt`, kita memperbolehkan view untuk memproses permintaan POST tanpa memeriksa token CSRF, yang berguna ketika kita yakin bahwa permintaan tersebut berasal dari sumber yang tepercaya. Namun, penting untuk diingat bahwa menggunakan `csrf_exempt` mengurangi keamanan, sehingga harus digunakan dengan hati-hati dan hanya pada endpoint yang benar-benar aman.
+
+4. Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+   Pembersihan data input pengguna perlu dilakukan di backend meskipun sudah dilakukan di frontend karena alasan keamanan, konsistensi, dan validasi. Pengguna dapat dengan mudah memanipulasi data yang dikirim dari frontend, sehingga pembersihan di backend membantu mencegah risiko serangan seperti SQL injection atau XSS. Selain itu, pembersihan di backend memastikan semua data yang diterima mengikuti aturan yang sama, menjaga konsistensi dan integritas aplikasi. Backend juga dapat melakukan validasi yang lebih kompleks dan memberikan umpan balik yang lebih terperinci jika data tidak valid, sehingga memungkinkan penanganan kesalahan yang lebih baik. Oleh karena itu, pembersihan data harus dilakukan di kedua sisi untuk memastikan keamanan dan validitas data secara menyeluruh.
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+   - Pertama saya buat fungsi add_giggle_entry_ajax di views.py dengan menggunakan decorator @csrf_exempt dan @require_POST. Lalu saya menambahkan routing dengan memasukkan path URL ke dalam urlpatterns di urls.py. Pada fungsi add_giggle_entry_ajax gunakan strip_tags untuk membersihkan tag HTML dari variabel name dan description yang dikirim oleh pengguna melalui request POST.
+   - Selanjutnya saya mengubah cara mengambil data produk dengan menghapus products = Product.objects.filter(user=request.user) dan 'products : products' dari context, serta ganti data = Product.objects.all() dengan data = GiggleCatalogue.objects.filter(user=request.user) pada fungsi show_xml dan show_json, karena sekarang produk akan didapat dari endpoint /json.
+   - Buat fungsi getGiggleEntries() dan refreshGiggleEntries di dalam blok skrip pada main.html, menyesuaikan htmlString dengan desain kartu yang telah dibuat. Tambahkan modal untuk menambah produk dengan fungsi showModal() dan hideModal(), serta tombol "Add New Product by AJAX" yang menargetkan curdModal.
+   - Lalu tambahkan fungsi addGiggleEntry() dengan metode POST, serta event listener pada form yang memanggil addGiggleEntry. Di forms.py, buat fungsi clean_name, clean_price, clean_desc, dan clean_giggle. Tambahkan skrip DOMPurify pada blok meta, dan gunakan DOMPurify.sanitize() pada nama dan deskripsi produk di fungsi refreshGiggleEntries untuk membersihkan data di frontend.
+   - Terakhir saya melakukan `git add`, `commit`, dan `push`.
