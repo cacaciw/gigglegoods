@@ -132,6 +132,8 @@
         giggleEntries.forEach((item) => {
           const name = DOMPurify.sanitize(item.fields.name);
           const description = DOMPurify.sanitize(item.fields.description);
+          const price = DOMPurify.sanitize(item.fields.price);
+          const giggeLevel = DOMPurify.sanitize(item.fields.giggeLevel);
           htmlString += `
         <div class="relative break-inside-avoid">
               <div class="relative top-5 bg-black shadow-md mb-6 flex flex-col border-2 border-gray-700 transform hover:scale-105 transition-transform duration-300">
