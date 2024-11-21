@@ -13,6 +13,11 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
+from django.contrib.auth import logout as auth_logout
+
 
 
 def landing_page(request):
@@ -136,4 +141,38 @@ def add_giggle_entry_ajax(request):
         return JsonResponse({'success': True, 'id': giggle_entry.pk})
     else:
         return JsonResponse({'success': False})
+    
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_product = GiggleCatalogue.objects.create(
+                name=data["Name"],
+                description=data["Description"],
+                price=int(data["Price"]),
+                giggleLevel=int(data["GiggleLevel"]),
+                user=request.user 
+            )
+            new_product.save()
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    return JsonResponse({"status": "error", "message": "Invalid request method"}, status=401)
 
+@csrf_exempt
+def logout(request):
+    username = request.user.username
+
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logout berhasil!"
+        }, status=200)
+    except:
+        return JsonResponse({
+        "status": False,
+        "message": "Logout gagal."
+        }, status=401)
